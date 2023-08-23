@@ -10,7 +10,7 @@ Pravesh Parekh, Chun Chieh Fan, Oleksandr Frei, Clare E. Palmer, Diana M. Smith,
 ## Requirements
 * [MATLAB](http://mathworks.com)
 
-* To run the code(s), you need a copy of FEMA and associated tools/utility functions. [Download the repository here](https://github.com/cmig-research-group/cmig_tools)
+* FEMA and associated tools/utility functions [Download the repository here](https://github.com/cmig-research-group/cmig_tools)
 
 * For running the applications on the ACBD Study data, you will need access to the [Adolescent Brain Cognitive Development<sup>SM</sup> data](https://abcdstudy.org/)
 

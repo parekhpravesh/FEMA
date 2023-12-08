@@ -1,10 +1,10 @@
 %% Simulation 005: comparison with fitlme as a function of number of observations
 %% Include relevant paths
-addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/cmig_tools_internal-beta/cmig_tools_utils/matlab');
-addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/cmig_tools_internal-beta/FEMA');
+addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/codebase/cmig_tools-2.3.0/cmig_tools_utils/matlab');
+addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/codebase/cmig_tools-2.3.0/FEMA');
 
 %% Prepare output directory
-outDir = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-08-02_Redone/Simulation004_Compare_fitlme_perms_nn_repeats';
+outDir = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation005_Compare_fitlme_perms_nn_nObs';
 if not(exist(outDir, 'dir'))
     mkdir(outDir);
 end
@@ -149,19 +149,22 @@ for obs = 1:length(nObservations)
         FEMAtimeInit = tic;
 
         % Eatimate model parameters using FEMA
-        [beta_hat, beta_se, zmat, logpmat, sig2tvec, sig2mat,       ...
-         Hessmat, logLikvec, beta_hat_perm, beta_se_perm,           ...
-         zmat_perm, sig2tvec_perm, sig2mat_perm, logLikvec_perm] =  ...
-         FEMA_fit(X, iid, eid, fid, agevec, ymat, niter, ones(1,nXvars),  ...
-                  allBins, [], 'RandomEffects', RandomEffects, 'nperms', numPerms, 'PermType', 'wildbootstrap-nn');
+        [beta_hat, beta_se, zmat, logpmat, sig2tvec, sig2mat,               ...
+         Hessmat, logLikvec, beta_hat_perm, beta_se_perm,                   ...
+         zmat_perm, sig2tvec_perm, sig2mat_perm, logLikvec_perm,            ...
+         binvec_save, nvec_bins, tvec_bins, FamilyStruct, reusableVars] =   ...
+         FEMA_fit(X, iid, eid, fid, agevec, ymat, niter, ones(1,nXvars),    ...
+                  allBins, [], 'RandomEffects', RandomEffects,              ...
+                  'nperms', numPerms, 'PermType', 'wildbootstrap-nn', 'returnReusable', true);
             
         % End timer for FEMA
         FEMAelapsed = toc(FEMAtimeInit);
 
         % Save everything
-        save(fullfile(tmpOutDir, 'Results_FEMA.mat'), 'beta_hat',    'beta_se', 'zmat', 'logpmat', 'sig2tvec', 'sig2mat',     ...
-                                                      'FEMAelapsed', 'Hessmat', 'logLikvec', 'beta_hat_perm', 'beta_se_perm', ...
-                                                      'zmat_perm',   'sig2tvec_perm', 'sig2mat_perm', 'logLikvec_perm', 'ymat', 'X', 'iid', 'fid');
+        save(fullfile(tmpOutDir, 'Results_FEMA.mat'), 'beta_hat',    'beta_se', 'zmat', 'logpmat', 'sig2tvec', 'sig2mat',       ...
+                                                      'FEMAelapsed', 'Hessmat', 'logLikvec', 'beta_hat_perm', 'beta_se_perm',   ...
+                                                      'zmat_perm',   'sig2tvec_perm', 'sig2mat_perm', 'logLikvec_perm', 'ymat', ...
+                                                      'X', 'iid', 'fid', 'binvec_save', 'FamilyStruct', 'reusableVars');
                                          
         % Now loop over all phenotypes and estimate model using fitlme
         % Call using fitlmematrix so no time is spent on making a table type
@@ -207,7 +210,8 @@ for obs = 1:length(nObservations)
         variables_lme.elapsed         = lmeElapsed;
     
         % Save
-        save(fullfile(tmpOutDir, 'Results_fitlmematrix.mat'), 'mdls', 'lmeElapsed', '-v7.3');
+        % No longer saving each model - takes a huge amount of resources
+        % save(fullfile(tmpOutDir, 'Results_fitlmematrix.mat'), 'mdls', 'lmeElapsed', '-v7.3');
         save(fullfile(tmpOutDir, 'Results_fitlmematrix_summary.mat'), 'variables_lme');
     
         % Update user

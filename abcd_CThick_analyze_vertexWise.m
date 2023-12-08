@@ -1,18 +1,18 @@
 %% Analyze sMRI DK cortical thickness measures vertex wise
 %% Setup
 % Add FEMA code to path
-addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta/cmig_tools_utils/matlab');
-addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta/FEMA');
+addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/cmig_tools-2.3.0/cmig_tools_utils/matlab');
+addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/cmig_tools-2.3.0/showSurf');
+addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/cmig_tools-2.3.0/FEMA');
 
 % Specify release number
 dataRelease = '4.0';
 
 % Various paths
 dirABCD         = '/space/amdale/1/tmp/ABCD_cache/abcd-sync/';
-dirCode         = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta';
-dirOut          = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE';
+dirOut          = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/CorticalThickness_vertexWise_FSE';
 dirSupport      = '/space/amdale/1/tmp/ABCD_cache/abcd-sync/4.0/support_files/ABCD_rel4.0_unfiltered/';
-dirDesign       = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD';
+dirDesign       = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/';
 dirTabulated    = fullfile(dirABCD, dataRelease, 'tabulated', 'released'); 
 dirImaging      = fullfile(dirABCD, dataRelease, 'imaging_concat', 'vertexwise', 'smri');
 fnameGRM        = fullfile(dirABCD, dataRelease, 'genomics', ['ABCD_rel', dataRelease, '_grm.mat']);
@@ -158,7 +158,10 @@ nbins           = 20;
 
 %% Call FEMA_fit
 initFEMA = tic;
-[beta_hat, beta_se, zmat, logpmat, sig2tvec, sig2mat, Hessmat, logLikvec] =   ...
+[beta_hat,      beta_se,        zmat,        logpmat,       ...
+ sig2tvec,      sig2mat,        Hessmat,     logLikvec,     ...
+ beta_hat_perm, beta_se_perm,   zmat_perm,   sig2tvec_perm, ...
+ sig2mat_perm,  logLikvec_perm, binvec_save] =              ...
  FEMA_fit(X, SubjectEffect, eid, FamilyEffect, agevec, ymatUse_std, niter,    ...
           contrasts, nbins, [], 'RandomEffects', RandomEffects, 'nperms', nperms);
 elapsedFEMA = toc(initFEMA);
@@ -215,15 +218,16 @@ if sum(~mask)>0
 end
 
 % Save output
-base_variables_to_save = {'X','iid','eid','colnames_model','contrasts','zmat','logpmat','beta_hat','beta_se','sig2mat','sig2tvec','mask'};
+base_variables_to_save = {'X','iid','eid','colnames_model','contrasts','zmat','logpmat','beta_hat','beta_se','sig2mat','sig2tvec','mask', 'binvec_save'};
 save(fullfile(dirOut, 'Results_masked.mat'), base_variables_to_save{:}, '-v7.3');
 
 %% Generate lookup tables
 fsdir                       = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/from_RH4-x86_64-R711';
-lookup_age_uncorrected      = generateLookup_vertices(beta_hat(2,:), zmat(2,:), beta_se(2,:), [], [],           fsdir);
-lookup_age_Bonferroni       = generateLookup_vertices(beta_hat(2,:), zmat(2,:), beta_se(2,:), [], 0.05/18742,   fsdir);
-lookup_ageDelta_uncorrected = generateLookup_vertices(beta_hat(3,:), zmat(3,:), beta_se(3,:), [], [],           fsdir);
-lookup_ageDelta_Bonferroni  = generateLookup_vertices(beta_hat(3,:), zmat(3,:), beta_se(3,:), [], 0.05/18742,   fsdir);
+cd(fsdir);
+lookup_age_uncorrected      = FEMA_lookupVertices(beta_hat(2,:), zmat(2,:), beta_se(2,:), [], [],           fsdir);
+lookup_age_Bonferroni       = FEMA_lookupVertices(beta_hat(2,:), zmat(2,:), beta_se(2,:), [], 0.05/18742,   fsdir);
+lookup_ageDelta_uncorrected = FEMA_lookupVertices(beta_hat(3,:), zmat(3,:), beta_se(3,:), [], [],           fsdir);
+lookup_ageDelta_Bonferroni  = FEMA_lookupVertices(beta_hat(3,:), zmat(3,:), beta_se(3,:), [], 0.05/18742,   fsdir);
 
 writetable(lookup_age_uncorrected{1},       fullfile(dirOut, 'Lookup_age_uncorrected.xlsx'));
 writetable(lookup_age_Bonferroni{1},        fullfile(dirOut, 'Lookup_age_Bonferroni.xlsx'));

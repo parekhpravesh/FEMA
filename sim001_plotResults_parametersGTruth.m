@@ -1,7 +1,10 @@
 %% Summarize and plot results from simulation 001 - parameter recovery at bin size 20
 %% Load all results
-workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/fromTSD/';
-outDir  = '/Applications/Projects/2023-01-31_FEMAExperiments/2023-08-11_FiguresRedone/simulation-GTruth';
+workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/export_TSD/';
+outDir  = '/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/simulation-GTruth';
+if ~exist(outDir, 'dir')
+    mkdir(outDir);
+end
 load(fullfile(workDir, 'Results_experiment01.mat'));
 
 %% Analyze bin == 20

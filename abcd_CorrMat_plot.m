@@ -1,6 +1,6 @@
 %% Plot corrmat results
-load('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/Corrmat_FSE/Results_half.mat', 'zmat');
-load('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/Corrmat_FSE/tmp_roinames.mat');
+load('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/Corrmat_FSE/Results_half.mat', 'zmat');
+load('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/Corrmat_FSE/tmp_roinames.mat');
 roinames    = roinames';
 numParcels  = length(roinames);
 
@@ -18,9 +18,9 @@ zmat_age        = triu(zmat_age.',1)        + tril(zmat_age);
 zmat_ageDelta   = triu(zmat_ageDelta.',1)   + tril(zmat_ageDelta);
 
 %% Gordon information
-gordonNames     = readtable('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/Corrmat_FSE/nodeNames.txt', 'ReadVariableNames', false);
-gordonComm      = readtable('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/Corrmat_FSE/communityAffiliation.txt', 'ReadVariableNames', false);
-gordonCommNames = readtable('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/Corrmat_FSE/communityNames.txt', 'ReadVariableNames', false);
+gordonNames     = readtable('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/Corrmat_FSE/nodeNames.txt', 'ReadVariableNames', false);
+gordonComm      = readtable('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/Corrmat_FSE/communityAffiliation.txt', 'ReadVariableNames', false);
+gordonCommNames = readtable('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/Corrmat_FSE/communityNames.txt', 'ReadVariableNames', false);
 
 % Parse Gordon parcellations
 gordonNames.Var1      = strrep(strrep(gordonNames.Var1, 'L', 'Left '), 'R', 'Right ');
@@ -141,7 +141,7 @@ ax.YAxis.TickLength = [0 0];
 ax.XAxis.TickLabels = [];
 ax.YAxis.TickLabels = [];
 
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/Corrmat_FSE/Corrmat_Age_FSE.png', '-dpng', '-r900');
+print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/Corrmat_FSE/Corrmat_Age_FSE.png', '-dpng', '-r900');
 close(fig);
 
 %% Age delta
@@ -175,7 +175,7 @@ ax.YAxis.TickLength = [0 0];
 ax.XAxis.TickLabels = [];
 ax.YAxis.TickLabels = [];
 
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/Corrmat_FSE/Corrmat_AgeDelta_FSE.png', '-dpng', '-r900');
+print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/Corrmat_FSE/Corrmat_AgeDelta_FSE.png', '-dpng', '-r900');
 close(fig);
 
 % %% Age

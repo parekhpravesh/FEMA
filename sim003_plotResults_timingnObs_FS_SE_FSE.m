@@ -2,8 +2,8 @@
 % This part plots results for FS, SE, and FSE models, comparing with
 % fitlmematrix timing
 %% Load all results
-workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/fromTSD/';
-load(fullfile(workDir, 'Results_experiment03.mat'));
+workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/export_TSD/';
+load(fullfile(workDir, 'Results_experiment03_nObs.mat'));
 
 %% Make a plot
 fig  = figure('Units', 'centimeters', 'Position', [10 10 16 9], 'PaperUnits','centimeters', 'PaperSize',[16 16]);
@@ -63,5 +63,5 @@ ll             = legend(allH(2), {'FEMA', 'fitlmematrix', 'fitlmematrix (paralle
 ll.Position(2) = ll.Position(2)-0.25;
 ll.Position(1) = 0.15;
 
-print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-08-11_FiguresRedone/Results04-Comparison_ComputationalTime_FS-SE-FSE.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/Results03-Comparison_ComputationalTime_FS-SE-FSE.png', '-dpng', '-r900');
 close(fig);

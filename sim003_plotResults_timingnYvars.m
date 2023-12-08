@@ -1,7 +1,7 @@
 %% Plot results of simulation 003: computational time as a function of number of y variables
 %% Load all results
-workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/fromTSD/';
-load(fullfile(workDir, 'Results_experiment04.mat'));
+workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/export_TSD/';
+load(fullfile(workDir, 'Results_experiment03_nYvars.mat'));
 
 %% Plot
 fig  = figure('Units', 'centimeters', 'Position', [10 10 16 9]);
@@ -38,5 +38,5 @@ allH(ax).YAxis.FontName  = 'CMUBright';
 ll = legend(allH(ax), {'FEMA', 'fitlmematrix', 'fitlmematrix (parallel)'}, 'Orientation', 'horizontal', 'Location', 'southoutside', 'Box', 'off', 'FontSize', 12, 'FontName', 'CMUBright');
 ll.Position(2) = ll.Position(2) - 0.2;
 
-print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-08-11_FiguresRedone/Results04-Comparison_ComputationalTime_nYVars.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/Results03-Comparison_ComputationalTime_nYVars.png', '-dpng', '-r900');
 close(fig);

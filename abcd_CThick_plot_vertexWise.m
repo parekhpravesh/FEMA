@@ -1,13 +1,9 @@
 %% Plot results for cortical thickness - vertex wise
-
-addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/2023-03-20_cmig_tools_internal-beta/showSurf');
-addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/colormaps');
+addpath('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/cmig_tools-2.3.0/cmig_tools_utils/matlab/');
+addpath('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/cmig_tools-2.3.0/showSurf');
 
 % Settings
-dirname_out     = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE'; 
-fstem_imaging   = 'thickness_ic5_sm256'; % imaging phenotype used for analysis
-fname_results   = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/Results_masked.mat'; 
-dataRelease     = '4.0'; % ABCD data release
+fname_results   = '/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/CorticalThickness_vertexWise_FSE/Results_masked.mat'; 
 
 % Load results
 load(fname_results);
@@ -28,7 +24,6 @@ numVertices = 18742;
 alpha       = 0.05/numVertices;
 
 % p values for age
-% altpValues_age   = 2 * normcdf(-abs(zmat(locAge,:)),0,1);
 pValues_age      = normcdf(-abs(zmat(locAge,:)))*2;
 pValues_ageDelta = normcdf(-abs(zmat(locAgeDelta,:)))*2;
 
@@ -37,7 +32,7 @@ pValues_ageDelta = normcdf(-abs(zmat(locAgeDelta,:)))*2;
 vertvals = zmat(locAge, :);
 
 fh = doPlot(vertvals, '\itZ\rm\bf-score age_{recruitment}', 'blueblackred', 2, -min(300, max(abs(vertvals))));
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/ZScores_Age_blueblackred_uncorrected.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/CorticalThickness_vertexWise_FSE/ZScores_Age_blueblackred_uncorrected.png', '-dpng', '-r900');
 close(fh);
 
 %% Age - Bonferroni corrected
@@ -48,14 +43,14 @@ vertvals = zmat(locAge, :);
 vertvals(~(pValues_age < alpha)) = 0;
 
 fh = doPlot(vertvals, '\itZ\rm\bf-score age_{recruitment}', 'blueblackred', 2, -min(300, max(abs(vertvals))));
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/ZScores_Age_blueblackred_Bonferroni.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/CorticalThickness_vertexWise_FSE/ZScores_Age_blueblackred_Bonferroni.png', '-dpng', '-r900');
 close(fh);
 
 %% AgeDelta - uncorrected
 % Define vertex values
 vertvals = zmat(locAgeDelta, :);
 fh = doPlot(vertvals, '\itZ\rm\bf-score age_{delta}', 'blueblackred', 2, -min(300, max(abs(vertvals))));
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/ZScores_AgeDelta_blueblackred_uncorrected.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/CorticalThickness_vertexWise_FSE/ZScores_AgeDelta_blueblackred_uncorrected.png', '-dpng', '-r900');
 close(fh);
 
 %% AgeDelta - Bonferroni corrected
@@ -67,27 +62,27 @@ vertvals(~(pValues_ageDelta < alpha)) = 0;
 
 fh = doPlot(vertvals, '\itZ\rm\bf-score age_{delta}', 'blueblackred', 2, -min(300, max(abs(vertvals))));
 
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/ZScores_AgeDelta_blueblackred_Bonferroni.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/CorticalThickness_vertexWise_FSE/ZScores_AgeDelta_blueblackred_Bonferroni.png', '-dpng', '-r900');
 close(fh);
 
 %% Family effect = 1
 fh = doPlot(sig2mat(1,:).*sig2tvec, 'Family Effect', 'fire', 1, 0);
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/RFX_FamilyEffect_fire.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/CorticalThickness_vertexWise_FSE/RFX_FamilyEffect_fire.png', '-dpng', '-r900');
 close(fh);
 
 %% Subject effect = 2
 fh = doPlot(sig2mat(2,:) .* sig2tvec, 'Subject Effect', 'fire', 1, 0);
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/RFX_SubjectEffect_fire.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/CorticalThickness_vertexWise_FSE/RFX_SubjectEffect_fire.png', '-dpng', '-r900');
 close(fh);
 
 %% Error effect = 3
 fh = doPlot(sig2mat(3,:) .* sig2tvec, 'Unmodeled variance', 'fire', 1, 0);
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/RFX_ErrorEffect_fire.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/CorticalThickness_vertexWise_FSE/RFX_ErrorEffect_fire.png', '-dpng', '-r900');
 close(fh);
 
 %% Effect of F, and S
 fh = doPlot(sum(sig2mat(1:2,:) .* sig2tvec), '\itF\rm\bf and \itS\rm\bf Effect', 'fire', 1, 0);
-print('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE/RFX_F_S_Effect_fire.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/CorticalThickness_vertexWise_FSE/RFX_F_S_Effect_fire.png', '-dpng', '-r900');
 close(fh);
 
 function fh = doPlot(vertvals, str, cmap, polarity, climMin)

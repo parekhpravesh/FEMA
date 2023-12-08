@@ -1,10 +1,10 @@
 %% Simulation 003: comparison with fitlme - time focused (function of number of y variables)
 %% Include relevant paths
-addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/cmig_tools_internal-beta/cmig_tools_utils/matlab');
-addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/cmig_tools_internal-beta/FEMA');
+addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/codebase/cmig_tools-2.3.0/cmig_tools_utils/matlab');
+addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/codebase/cmig_tools-2.3.0/FEMA');
 
 %% Prepare output directory
-outDir = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation004_Compare_times_yVars_fitlmematrix';
+outDir = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation003_CompareTimes_nYvars';
 if not(exist(outDir, 'dir'))
     mkdir(outDir);
 end

@@ -7,11 +7,11 @@
 % FEMA and will be for 20 different values of bins
 
 %% Include relevant paths
-addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/cmig_tools_internal-beta/cmig_tools_utils/matlab');
-addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/cmig_tools_internal-beta/FEMA');
+addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/codebase/cmig_tools-2.3.0/cmig_tools_utils/matlab');
+addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/codebase/cmig_tools-2.3.0/FEMA');
 
 %% Prepare output directory
-outDir = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation001_ParamRecovery_sig2tvec1';
+outDir = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation001_ParamRecovery_sig2tvec1';
 if not(exist(outDir, 'dir'))
     mkdir(outDir);
 end
@@ -152,17 +152,21 @@ for repeats = 1:nRepeats
         % Initialize timer
         timeInit = tic;
 
-        % Eatimate model parameters using FEMA
-        [beta_hat, beta_se, zmat, logpmat, sig2tvec, sig2mat]           = ...
-        FEMA_fit(X, iid, eid, fid, agevec, ymat, niter, ones(1,nXvars),   ...
-                allBins(bins), [], 'RandomEffects', RandomEffects);
+        % Estimate model parameters using FEMA
+        [beta_hat,      beta_se,        zmat,        logpmat,              ...
+         sig2tvec,      sig2mat,        ~,           ~,                    ...
+         ~,             ~,              ~,           ~,                    ...
+         ~,             ~,              binvec_save, ~,                    ...
+         ~,             ~,              ~] =                               ...
+        FEMA_fit(X, iid, eid, fid, agevec, ymat, niter, ones(1,nXvars),    ...
+                allBins(bins), [], 'RandomEffects', RandomEffects, 'returnReusable', true);
             
         % End timer
         elapsed = toc(timeInit);
         
         % Save everything
         save(fullfile(tmpOutDir, 'Results.mat'), 'beta_hat', 'beta_se', 'zmat', 'logpmat', 'sig2tvec', 'sig2mat', ...
-                                                 'elapsed', 'repeats', 'bins', 'ymat', 'X', 'iid', 'fid');
+                                                 'elapsed', 'repeats', 'bins', 'ymat', 'X', 'iid', 'fid', 'binvec_save');
                             
         % Update user
         disp(['Finished: Repeat ', num2str(repeats, '%04d'), ', bin ', num2str(bins, '%04d'), ' in ', num2str(toc(timeInit), '%.2f') 's']);

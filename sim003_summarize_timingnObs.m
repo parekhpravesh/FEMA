@@ -1,7 +1,6 @@
 %% Summarize simulation 003: timming as a function of number of obserations
-
 % Set paths and initialize
-rootDir         = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation003_Compare_times_again';
+rootDir         = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation003_CompareTimes_nObs';
 settings        = load(fullfile(rootDir, 'Settings.mat'), 'settings');
 settings        = settings.settings;
 header          = {'NumObservations', 'FEMA_FE', 'FEMA_SE', 'FEMA_AE', 'FEMA_FSE', 'FEMA_FAE', 'FEMA_SAE', 'FEMA_FASE', 'fitlme_FE', 'fitlme_SE', 'fitlme_FSE', 'fitlme_par_FE', 'fitlme_par_SE', 'fitlme_par_FSE'};
@@ -46,4 +45,4 @@ for vals = 1:length(settings.nObservations)
 end
 
 % Save summary
-save(fullfile(rootDir, 'Results_experiment03.mat'), 'results', 'settings');
+save(fullfile(rootDir, 'Results_experiment03_nObs.mat'), 'results', 'settings');

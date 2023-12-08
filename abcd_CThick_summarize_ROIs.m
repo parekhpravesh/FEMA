@@ -3,7 +3,7 @@
 addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta/showSurf');
 
 % Get data
-dirResults = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_DK_FSE_nn';
+dirResults = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/CorticalThickness_DK_FSE_nn';
 load(fullfile(dirResults, 'Results.mat'), 'beta_*', 'covariates', 'covarNames', 'logpmat', 'lowVar_MATLAB', 'RandomEffects', 'roiNames', 'sig2*', 'UppVar_MATLAB', 'varComp_MATLAB', 'zmat', 'mdl');
 
 % Identify column of interest - should be third column: intercept, age, age
@@ -22,6 +22,14 @@ pValues_FEMA = normcdf(-abs(zmat))*2;
 
 %% New roi names
 roiNames_Use = strrep(roiNames, 'smri_thick_cdk_', '');
+
+%% Compile lower and upper confidence interval for FEMA
+sig2Low = zeros(3, 68);
+sig2Upp = zeros(3, 68);
+for params = 1:3
+    sig2Low(params,:) = prctile(squeeze(sig2mat_perm(params,:,2:end)) .* squeeze(sig2tvec_perm(:,:,2:end)),  2.5, 2);
+    sig2Upp(params,:) = prctile(squeeze(sig2mat_perm(params,:,2:end)) .* squeeze(sig2tvec_perm(:,:,2:end)), 97.5, 2);
+end
 
 %% Identify left and right hemispheres
 locLeft     = find(~cellfun(@isempty, regexpi(roiNames_Use, 'lh$')));
@@ -44,8 +52,8 @@ results = cell2table([roiNames_Use', num2cell(...
                    'varFamily_MATLAB', 'lowFamily_MATLAB', 'uppFamily_MATLAB', 'varFamily_FEMA', 'lowFamily_FEMA', 'uppFamily_FEMA', ...
                    'varSubject_MATLAB', 'lowSubject_MATLAB', 'uppSubject_MATLAB', 'varSubject_FEMA', 'lowSubject_FEMA', 'uppSubject_FEMA', ... 
                    'varError_MATLAB', 'lowError_MATLAB', 'uppError_MATLAB', 'varError_FEMA', 'lowError_FEMA', 'uppError_FEMA'});
-writetable(results, '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_DK_FSE_nn/Summary_DK40.xlsx');
-
+writetable(results, '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/CorticalThickness_DK_FSE_nn/Summary_DK40.xlsx');
+save('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/CorticalThickness_DK_FSE_nn/Summary_DK40.mat');
 
 %% Deprecated code for plotting that was previously used (prior to the summary section)
 % %% Plot all parameter estimates

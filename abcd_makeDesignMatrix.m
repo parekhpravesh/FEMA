@@ -5,8 +5,8 @@ dataRelease = '4.0';
 
 % Various paths
 dirABCD         = '/space/amdale/1/tmp/ABCD_cache/abcd-sync/';
-dirCode         = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta';
-dirOut          = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE';
+dirCode         = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/cmig_tools-2.3.0';
+dirOut          = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_re/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_vertexWise_FSE';
 dirSupport      = '/space/amdale/1/tmp/ABCD_cache/abcd-sync/4.0/support_files/ABCD_rel4.0_unfiltered/';
 dirTabulated    = fullfile(dirABCD, dataRelease, 'tabulated', 'released'); 
 fname_GRM       = fullfile(dirABCD, dataRelease, 'genomics', ['ABCD_rel', dataRelease, '_grm.mat']);
@@ -116,4 +116,4 @@ locDelete                 = ismember(dataWorking.toAlign, toDelete);
 dataWorking(locDelete, :) = [];
 
 %% Save
-writetable(dataWorking, '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/GlobalDesignMatrix.csv', 'Delimiter', '\t');
+writetable(dataWorking, '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/GlobalDesignMatrix.csv', 'Delimiter', '\t');

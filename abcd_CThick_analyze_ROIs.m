@@ -1,18 +1,17 @@
 %% Analyze sMRI DK cortical thickness measures across ROIs using FSE model (rate of change) and compare with MATLAB
 %% Setup
 % Add FEMA code to path
-addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta/cmig_tools_utils/matlab');
-addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta/FEMA');
+addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/cmig_tools-2.3.0/cmig_tools_utils/matlab');
+addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/cmig_tools-2.3.0/FEMA');
 
 % Specify release number
 dataRelease = '4.0';
 
 % Various paths
 dirABCD         = '/space/amdale/1/tmp/ABCD_cache/abcd-sync/';
-dirCode         = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta';
-dirOut          = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/CorticalThickness_DK_FSE_nn';
+dirOut          = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/CorticalThickness_DK_FSE_nn';
 dirSupport      = '/space/amdale/1/tmp/ABCD_cache/abcd-sync/4.0/support_files/ABCD_rel4.0_unfiltered/';
-dirDesign       = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD';
+dirDesign       = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone';
 dirTabulated    = fullfile(dirABCD, dataRelease, 'tabulated', 'released'); 
 dirImaging      = fullfile(dirABCD, dataRelease, 'imaging_concat', 'vertexwise', 'smri');
 fnameGRM        = fullfile(dirABCD, dataRelease, 'genomics', ['ABCD_rel', dataRelease, '_grm.mat']);

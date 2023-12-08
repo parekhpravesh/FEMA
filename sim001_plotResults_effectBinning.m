@@ -1,6 +1,6 @@
 %% Plot results for simulation 001: effect of binning
 % Load all results
-workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/fromTSD/';
+workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/export_TSD/';
 load(fullfile(workDir, 'Results_experiment01.mat'));
 
 %% Analyze bins
@@ -127,5 +127,5 @@ text(allH(2), minBinValue, cputimeMin+2, num2str(cputimeMin,'%.2f'),  'FontSize'
 text(allH(2), 0.22, Ylimits_H2(2), 'b)', 'FontSize', 12, 'FontWeight', 'bold', 'FontName', 'CMUBright');
 
 % Save this figure
-print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-08-11_FiguresRedone/Results01-EffectBins.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/Results01-EffectBins.png', '-dpng', '-r900');
 close(fig);

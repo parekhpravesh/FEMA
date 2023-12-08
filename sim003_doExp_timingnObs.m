@@ -1,10 +1,10 @@
 %% Simulation 003: comparison with fitlme - time focused (function of number of observations)
 %% Include relevant paths
-addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/cmig_tools_internal-beta/cmig_tools_utils/matlab');
-addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/cmig_tools_internal-beta/FEMA');
+addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/codebase/cmig_tools-2.3.0/cmig_tools_utils/matlab');
+addpath('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/codebase/cmig_tools-2.3.0/FEMA');
 
 %% Prepare output directory
-outDir = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation003_Compare_times_again';
+outDir = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation003_CompareTimes_nObs';
 if not(exist(outDir, 'dir'))
     mkdir(outDir);
 end
@@ -228,9 +228,9 @@ for obs = 1:length(nObservations)
     % Initialize timer for FEMA
     FEMA_SE_timeInit = tic;
 
-    % Eatimate model parameters using FEMA
+    % Eatimate model parameters using FEMA - here fid = iid
     [beta_hat_SE, beta_se_SE, zmat_SE, logpmat_SE, sig2tvec_SE, sig2mat_SE] = ...
-     FEMA_fit(X, iid, eid, fid, agevec, ymat, niter, ones(1,nXvars),          ...
+     FEMA_fit(X, iid, eid, iid, agevec, ymat, niter, ones(1,nXvars),          ...
               allBins, [], 'RandomEffects', {'S', 'E'});
             
     % End timer for FEMA

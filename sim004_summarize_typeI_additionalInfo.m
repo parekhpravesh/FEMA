@@ -1,8 +1,9 @@
 %% Summarize additional information from simulation 004: type I error rate
 %% Initialize
-rootDir              = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation005_Type1';
-namesFEMA            = cellfun(@(x) strrep(x, ' ', ''), strcat({'FP_FEMA_y'}, num2str((1:20)')), 'UniformOutput', false);
-namesfitlmematrix    = cellfun(@(x) strrep(x, ' ', ''), strcat({'FP_fitlmematrix_y'}, num2str((1:20)')), 'UniformOutput', false);
+rootDir              = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation004_Type1';
+nyVars               = 50;
+namesFEMA            = cellfun(@(x) strrep(x, ' ', ''), strcat({'FP_FEMA_y'}, num2str((1:nyVars)')), 'UniformOutput', false);
+namesfitlmematrix    = cellfun(@(x) strrep(x, ' ', ''), strcat({'FP_fitlmematrix_y'}, num2str((1:nyVars)')), 'UniformOutput', false);
 header               = [{'Repeat', 'FP_FEMA', 'FP_fitlmematrix'}, namesFEMA', namesfitlmematrix'];
 locNamesFEMA         = not(cellfun(@isempty, regexpi(header, '^FP_FEMA_y')));
 locNamesfitlmematrix = not(cellfun(@isempty, regexpi(header, '^FP_fitlmematrix_y')));
@@ -124,4 +125,4 @@ mean_total_FP_fitlmematrix_0001  = ceil(mean(results_0001.FP_fitlmematrix));
 mean_total_FP_fitlmematrix_00001 = ceil(mean(results_00001.FP_fitlmematrix));
 
 %% Save results
-save('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation005_Type1/Results_experiment05_additionalInfo.mat', 'results_*', 'mean_*');
+save(fullfile(rootDir, 'Results_experiment04_additionalInfo.mat'), 'results_*', 'mean_*');

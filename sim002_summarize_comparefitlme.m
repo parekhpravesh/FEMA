@@ -1,7 +1,6 @@
 %% Summarize results of simulation 002: comparison with fitlme
-
 % Set paths and initialize
-rootDir         = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation002_Compare_fitlme_perms_nn';
+rootDir         = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation002_Compare_fitlme_perms_nn';
 settings        = load(fullfile(rootDir, 'Settings.mat'), 'settings');
 settings        = settings.settings;
 results_fitlme  = cell(10, 1);

@@ -1,11 +1,11 @@
 %% Summarize results of simulation 004: type I error rate
-
 % Set paths and initialize
-rootDir              = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation005_Type1';
+rootDir              = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation004_Type1';
 
 % Various column names in summary
-namesFEMA            = cellfun(@(x) strrep(x, ' ', ''), strcat({'FP_FEMA_y'}, num2str((1:20)')), 'UniformOutput', false);
-namesfitlmematrix    = cellfun(@(x) strrep(x, ' ', ''), strcat({'FP_fitlmematrix_y'}, num2str((1:20)')), 'UniformOutput', false);
+nyVars               = 50;
+namesFEMA            = cellfun(@(x) strrep(x, ' ', ''), strcat({'FP_FEMA_y'}, num2str((1:nyVars)')), 'UniformOutput', false);
+namesfitlmematrix    = cellfun(@(x) strrep(x, ' ', ''), strcat({'FP_fitlmematrix_y'}, num2str((1:nyVars)')), 'UniformOutput', false);
 header               = [{'Repeat', 'FP_FEMA', 'FP_fitlmematrix'}, namesFEMA', namesfitlmematrix'];
 locNamesFEMA         = not(cellfun(@isempty, regexpi(header, '^FP_FEMA_y')));
 locNamesfitlmematrix = not(cellfun(@isempty, regexpi(header, '^FP_fitlmematrix_y')));
@@ -53,4 +53,4 @@ for vals = 1:length(nRepeats)
 end
 
 %% Save results
-save('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation005_Type1/Results_experiment05.mat', 'results');
+save(fullfile(rootDir, 'Results_experiment04.mat'), 'results');

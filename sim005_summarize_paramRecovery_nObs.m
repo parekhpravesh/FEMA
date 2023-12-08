@@ -1,85 +1,48 @@
 %% Summarize results of simulation 005: parameter recovery as a function of number of observations
-
 % Set paths and initialize
-rootDir                 = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-08-02_Redone/Simulation004_Compare_fitlme_perms_nn_repeats';
-settings                = load(fullfile(rootDir, 'Settings.mat'), 'settings');
-settings                = settings.settings;
-SqDiff_FEMA_truth       = zeros(5, 500, 16);
-SqDiff_LME_truth        = zeros(5, 500, 16);
-SqDiff_FEMA_LME         = zeros(5, 500, 16);
-SqDiff_RFX_FEMA_truth   = zeros(3, 500, 16);
-SqDiff_RFX_LME_truth    = zeros(3, 500, 16);
-SqDiff_RFX_FEMA_LME     = zeros(3, 500, 16);
+rootDir         = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation005_Compare_fitlme_perms_nn_nObs';
+settings        = load(fullfile(rootDir, 'Settings.mat'), 'settings');
+settings        = settings.settings;
+numRepeats      = 5;
+numRFX          = length(settings.RandomEffects);
+est_FFX_FEMA    = zeros(settings.nXvars, settings.nyVars, numRepeats, length(settings.nObservations));
+est_FFX_LME     = zeros(settings.nXvars, settings.nyVars, numRepeats, length(settings.nObservations));
+est_RFX_FEMA    = zeros(numRFX,          settings.nyVars, numRepeats, length(settings.nObservations));
+est_RFX_LME     = zeros(numRFX,          settings.nyVars, numRepeats, length(settings.nObservations));
 
 %% Loop over every number of observation and summarize
-for vals = 1:16
-    tmp_SqDiff_FEMA_truth = zeros(5, 500, 5);
-    tmp_SqDiff_LME_truth  = zeros(5, 500, 5);
-    tmp_SqDiff_FEMA_LME   = zeros(5, 500, 5);
-    
-    tmp_RFX_SqDiff_FEMA_truth = zeros(3, 500, 5);
-    tmp_RFX_SqDiff_LME_truth  = zeros(3, 500, 5);
-    tmp_RFX_SqDiff_FEMA_LME   = zeros(3, 500, 5);
-
-    for repeats     = 1:5
+for vals = 1:length(settings.nObservations)
+    for repeats     = 1:numRepeats
         toLoad      = fullfile(rootDir, [num2str(vals, '%04d'), '-nObs-', num2str(settings.nObservations(vals), '%04d')], [num2str(vals, '%04d'), '-nObs-', num2str(settings.nObservations(vals), '%04d'), '-Repeat-', num2str(repeats, '%02d')]);
         vars_FEMA   = load(fullfile(toLoad, 'Results_FEMA.mat'), 'beta_*', 'FEMAelapsed', 'sig2*');
         vars_fitlme = load(fullfile(toLoad, 'Results_fitlmematrix_summary.mat'), 'variables_lme');
-        
-        % Squared difference
-        tmp_SqDiff_FEMA_truth(1:5, :, repeats) = (settings.GTruth.beta        - vars_FEMA.beta_hat(2:end,:)).^2;
-        tmp_SqDiff_LME_truth(1:5,  :, repeats) = (settings.GTruth.beta        - vars_fitlme.variables_lme.beta_hat_fitlme).^2;
-        tmp_SqDiff_FEMA_LME(1:5,   :, repeats) = (vars_FEMA.beta_hat(2:end,:) - vars_fitlme.variables_lme.beta_hat_fitlme).^2;
-        
-        % Squared difference - random effects; remember to square
-        % fitlmematrix estimates before comparing
-        tmp_RFX_SqDiff_FEMA_truth(1:3, :, repeats) = (settings.GTruth.sig2mat_true - vars_FEMA.sig2mat).^2;
-        tmp_RFX_SqDiff_LME_truth(1:3, :, repeats)  = (settings.GTruth.sig2mat_true - (vars_fitlme.variables_lme.sig2mat_fitlme).^2).^2;
-        tmp_RFX_SqDiff_FEMA_LME(1:3, :, repeats)   = (vars_FEMA.sig2mat            - (vars_fitlme.variables_lme.sig2mat_fitlme).^2).^2;
+        est_FFX_FEMA(1:settings.nXvars, 1:settings.nyVars, repeats, vals) = vars_FEMA.beta_hat(2:end,:);
+        est_FFX_LME(1:settings.nXvars,  1:settings.nyVars, repeats, vals) = vars_fitlme.variables_lme.beta_hat_fitlme;
+        est_RFX_FEMA(1:numRFX,          1:settings.nyVars, repeats, vals) = vars_FEMA.sig2mat;
+        est_RFX_LME(1:numRFX,           1:settings.nyVars, repeats, vals) = vars_fitlme.variables_lme.sig2mat_fitlme.^2;
     end
-    
-    % Average squared difference across repeats
-    SqDiff_FEMA_truth(:, :, vals) = mean(tmp_SqDiff_FEMA_truth, 3);
-    SqDiff_LME_truth(:, :, vals)  = mean(tmp_SqDiff_LME_truth,  3);
-    SqDiff_FEMA_LME(:, :, vals)   = mean(tmp_SqDiff_FEMA_LME,   3);
-    
-    % Average squared difference across repeats - random effects
-    SqDiff_RFX_FEMA_truth(:, :, vals) = mean(tmp_RFX_SqDiff_FEMA_truth, 3);
-    SqDiff_RFX_LME_truth(:,  :, vals) = mean(tmp_RFX_SqDiff_LME_truth,  3);
-    SqDiff_RFX_FEMA_LME(:,   :, vals) = mean(tmp_RFX_SqDiff_FEMA_LME,   3);
-    
 end
 
-%% Total average squared differences
-totalSqDiff_FEMA_truth = squeeze(sum(SqDiff_FEMA_truth,2));
-totalSqDiff_LME_truth  = squeeze(sum(SqDiff_LME_truth, 2));
-totalSqDiff_FEMA_LME   = squeeze(sum(SqDiff_FEMA_LME,  2));
+%% Sum(Sum(Average(Squared difference between ground truth and estimated value, over repeats), over y variables), over X variables)
+TotalmeanSqDiff_GTruth_FEMA_FFX = sum(squeeze(sum(squeeze(mean((settings.GTruth.beta - est_FFX_FEMA).^2, 3)),2)), 1);
+TotalmeanSqDiff_GTruth_LME_FFX  = sum(squeeze(sum(squeeze(mean((settings.GTruth.beta - est_FFX_LME).^2,  3)),2)), 1);
 
-% Total average squared difference - random effects
-totalSqDiff_RFX_FEMA_truth  = squeeze(sum(SqDiff_RFX_FEMA_truth, 2));
-totalSqDiff_RFX_LME_truth   = squeeze(sum(SqDiff_RFX_LME_truth,  2));
-totalSqDiff_RFX_FEMA_LME    = squeeze(sum(SqDiff_RFX_FEMA_LME,   2));
+TotalmeanSqDiff_GTruth_FEMA_RFX = sum(squeeze(sum(squeeze(mean((settings.GTruth.sig2mat_true - est_RFX_FEMA).^2, 3)),2)), 1);
+TotalmeanSqDiff_GTruth_LME_RFX  = sum(squeeze(sum(squeeze(mean((settings.GTruth.sig2mat_true - est_RFX_LME).^2,  3)),2)), 1);
 
-%% Average of the total squared difference across x variables
-AvgTotalSqDiff_FEMA_truth = mean(totalSqDiff_FEMA_truth, 1);
-AvgTotalSqDiff_LME_truth  = mean(totalSqDiff_LME_truth,  1);
-AvgTotalSqDiff_FEMA_LME   = mean(totalSqDiff_FEMA_LME,   1);
+%% Sum(Sum(Squared difference between ground truth and estimated value, over y variables), over X variables)
+TotalSqDiff_GTruth_FEMA_FFX = squeeze(sum(sum((settings.GTruth.beta - est_FFX_FEMA).^2, 2), 1));
+TotalSqDiff_GTruth_LME_FFX  = squeeze(sum(sum((settings.GTruth.beta - est_FFX_LME).^2,  2), 1));
 
-% Average of the total squared difference across x variables - random
-% effects
-AvgTotalSqDiff_RFX_FEMA_truth   = mean(totalSqDiff_RFX_FEMA_truth, 1);
-AvgTotalSqDiff_RFX_LME_truth    = mean(totalSqDiff_RFX_LME_truth,  1);
-AvgTotalSqDiff_RFX_FEMA_LME     = mean(totalSqDiff_RFX_FEMA_LME,   1);
+TotalSqDiff_GTruth_FEMA_RFX = squeeze(sum(sum((settings.GTruth.sig2mat_true - est_RFX_FEMA).^2, 2), 1));
+TotalSqDiff_GTruth_LME_RFX  = squeeze(sum(sum((settings.GTruth.sig2mat_true - est_RFX_LME).^2,  2), 1));
 
-%% Sum of the total squared difference across x variables
-SumTotalSqDiff_FEMA_truth = sum(totalSqDiff_FEMA_truth, 1);
-SumTotalSqDiff_LME_truth  = sum(totalSqDiff_LME_truth,  1);
-SumTotalSqDiff_FEMA_LME   = sum(totalSqDiff_FEMA_LME,   1);
+%% sum(Squared difference between ground truth and estimated value, over y variables)
+TotalySqDiff_GTruth_FEMA_FFX = squeeze(sum((settings.GTruth.beta - est_FFX_FEMA).^2, 2));
+TotalySqDiff_GTruth_LME_FFX  = squeeze(sum((settings.GTruth.beta - est_FFX_LME).^2, 2));
 
-% Sum of the total squared difference across x variables - random effects
-SumTotalSqDiff_RFX_FEMA_truth = sum(totalSqDiff_RFX_FEMA_truth, 1);
-SumTotalSqDiff_RFX_LME_truth  = sum(totalSqDiff_RFX_LME_truth,  1);
-SumTotalSqDiff_RFX_FEMA_LME   = sum(totalSqDiff_RFX_FEMA_LME,   1);
+TotalySqDiff_GTruth_FEMA_RFX = squeeze(sum((settings.GTruth.sig2mat_true - est_RFX_FEMA).^2, 2));
+TotalySqDiff_GTruth_LME_RFX  = squeeze(sum((settings.GTruth.sig2mat_true - est_RFX_LME).^2, 2));
 
 %% Save results
-save('/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-08-02_Redone/Simulation004_Compare_fitlme_perms_nn_repeats/Summary_Simulation004_Compare_fitlme_perms_nn_repeats.mat');
+save(fullfile(rootDir, 'Results_experiment05.mat'));

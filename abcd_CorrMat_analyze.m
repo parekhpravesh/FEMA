@@ -1,18 +1,17 @@
 %% Analyze corrmat
 %% Setup
 % Add FEMA code to path
-addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta/cmig_tools_utils/matlab');
-addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta/FEMA');
+addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/cmig_tools-2.3.0/cmig_tools_utils/matlab');
+addpath('/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/cmig_tools-2.3.0/FEMA');
 
 % Specify release number
 dataRelease = '4.0';
 
 % Various paths
 dirABCD         = '/space/amdale/1/tmp/ABCD_cache/abcd-sync/';
-dirCode         = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/code/cmig_tools_internal-beta';
-dirOut          = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/Corrmat_FSE';
+dirOut          = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/Corrmat_FSE';
 dirSupport      = '/space/amdale/1/tmp/ABCD_cache/abcd-sync/4.0/support_files/ABCD_rel4.0_unfiltered/';
-dirDesign       = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD';
+dirDesign       = '/home/pparekh/analyses/2023-02-17_FEMA-ABCD/2023-11-20_redone/';
 dirTabulated    = fullfile(dirABCD, dataRelease, 'tabulated', 'released'); 
 dirImaging      = fullfile(dirABCD, dataRelease, 'imaging_concat', 'corrmat', 'restingstate');
 fnameGRM        = fullfile(dirABCD, dataRelease, 'genomics', ['ABCD_rel', dataRelease, '_grm.mat']);
@@ -177,7 +176,10 @@ nbins           = 20;
 
 %% Call FEMA_fit
 initFEMA = tic;
-[beta_hat, beta_se, zmat, logpmat, sig2tvec, sig2mat, Hessmat, logLikvec] =   ...
+[beta_hat,      beta_se,        zmat,        logpmat,       ...
+ sig2tvec,      sig2mat,        Hessmat,     logLikvec,     ...
+ beta_hat_perm, beta_se_perm,   zmat_perm,   sig2tvec_perm, ...
+ sig2mat_perm,  logLikvec_perm, binvec_save] =              ...
  FEMA_fit(X, SubjectEffect, eid, FamilyEffect, agevec, ymatUse_std, niter,    ...
           contrasts, nbins, [], 'RandomEffects', RandomEffects, 'nperms', nperms);
 elapsedFEMA = toc(initFEMA);    
@@ -187,6 +189,9 @@ if not(exist(dirOut, 'dir'))
     mkdir(dirOut);
 end
 save(fullfile(dirOut, 'Results_half.mat'), '-v7.3');
+
+% Only save zmat for plotting
+save(fullfile(dirOut, 'Results_half_onlyZmat.mat'), 'zmat');
 
 function [ymat, iid_concat, eid_concat, ivec_mask, mask, colnames_imaging, pihat] = parseCorrmat(fnameImaging, dirTabulated, dirImaging, fnameGRM)
 % Code borrowed from FEMA_process_data

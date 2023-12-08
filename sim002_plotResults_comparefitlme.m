@@ -1,7 +1,7 @@
 %% Plot results of simulation 002: comparison with fitlme
 %% Load all results
-workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/fromTSD/';
-load(fullfile(workDir, 'Results_experiment02.mat'));
+workDir = '/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/export_TSD/';
+load(fullfile(workDir, 'Results_experiment02_nn.mat'));
 
 %% Sample size of 10000
 sampSize = 10000;
@@ -70,7 +70,7 @@ ll.Position(2) = ll.Position(2) - 0.11;
 ll.Position(1) = allH(3).Position(1) - 0.1;
 
 % Save this figure
-print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-08-11_FiguresRedone/Results03-Comparison_MATLAB_FEMA_Fixed.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/Results02-Comparison_MATLAB_FEMA_Fixed.png', '-dpng', '-r900');
 close(fig);
 
 %% Comparison of random effects
@@ -128,5 +128,5 @@ allH(1).YTickLabel      = num2str((5:5:50)', '%02d');
 ll              = legend(allH(2), {'FEMA', 'fitlme'}, 'Orientation', 'horizontal', 'Location', 'southoutside', 'FontSize', 12, 'Box', 'off', 'FontName', 'CMUBright');
 ll.Position(2)  = ll.Position(2) - 0.11;
 
-print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-08-11_FiguresRedone/Results03-Comparison_MATLAB_FEMA_RFX.png', '-dpng', '-r900');
+print('/Applications/Projects/2023-01-31_FEMAExperiments/2023-11-20_redone/Figures/Results02-Comparison_MATLAB_FEMA_RFX.png', '-dpng', '-r900');
 close(fig);

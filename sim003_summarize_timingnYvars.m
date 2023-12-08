@@ -1,7 +1,6 @@
 %% Summarize simulation 003: timming as a function of number of y variables
-
 % Set paths and initialize
-rootDir         = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation004_Compare_times_yVars_fitlmematrix';
+rootDir         = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation003_CompareTimes_nYvars';
 header          = {'NumYVars', 'FEMA_FSE', 'fitlme_FSE', 'fitlme_parFSE'};
 results         = table('Size', [50 4], 'VariableTypes', repmat({'double'}, 4, 1), 'VariableNames', header);
 nObs            = 10000;
@@ -24,4 +23,4 @@ for vals = 1:length(nYVars)
 end
 
 % Save summary
-save(fullfile(rootDir, 'Results_experiment04.mat'), 'results');
+save(fullfile(rootDir, 'Results_experiment03_nYvars.mat'), 'results');

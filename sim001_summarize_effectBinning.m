@@ -1,7 +1,6 @@
 %% Summarize results of simulation 001
-
 % Set paths and get settings
-rootDir  = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/Simulation001_ParamRecovery_sig2tvec1';
+rootDir  = '/ess/p697/cluster/users/parekh/2023-02-02_FEMA-Experiments/2023-11-17_Redone/Simulation001_ParamRecovery_sig2tvec1';
 settings = load(fullfile(rootDir, 'Settings.mat'), 'settings');
 settings = settings.settings;
 

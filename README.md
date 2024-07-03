@@ -2,7 +2,7 @@
 
 Pravesh Parekh, Chun Chieh Fan, Oleksandr Frei, Clare E. Palmer, Diana M. Smith, Carolina Makowski, John R. Iversen, Diliana Pecheva, Dominic Holland, Robert Loughnan, Pierre Nedelec, Wesley K. Thompson, Donald J. Hagler Jr., Ole A. Andreassen, Terry L. Jernigan, Thomas E. Nichols, and Anders M. Dale 
 
-**Preprint available [on bioRxiv](https://doi.org/10.1101/2021.10.27.466202)**
+**Published in [Human Brain Mapping](https://doi.org/10.1002/hbm.26579)**
 
 *This repository contains the code for performing the analyses and creating figures as reported in the FEMA methods paper*
 
